@@ -8,19 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
-        run: docker build -t santhoshjagadeesan/docker-react -f Dockerfile.dev .
-
-      - name: Run tests
-        run: docker run -e CI=true santhoshjagadeesan/docker-react npm run test
+      - uses: actions/checkout@v2
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker build -t santhoshjagadeesan/docker-react -f Dockerfile.dev .
+      - run: docker run -e CI=true santhoshjagadeesan/docker-react npm run test
